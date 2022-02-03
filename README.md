@@ -21,3 +21,11 @@ Step 2. Add the dependency
 	}
 
 
+java
+
+new SaveImage(imageView,"FolderName","SavedMessage","NotSavedMessage",Context)
+
+
+kotlin
+
+SaveImage(imageView,"FolderName","SavedMessage","NotSavedMessage",Context)
