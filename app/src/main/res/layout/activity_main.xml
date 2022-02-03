@@ -7,25 +7,37 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:orientation="horizontal"
         android:gravity="center_horizontal"
-        >
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/button"
-            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
+            android:layout_marginTop="5dp"
             android:text="Save" />
     </LinearLayout>
 
-    <ImageView
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:orientation="vertical"
+       android:layout_below="@+id/linear"
+       android:layout_height="wrap_content">
+    <com.fire.android.saveimage.touchView.TouchImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+   </LinearLayout>
+    <!--<ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="750dp"
         android:layout_marginTop="100dp"
-        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />-->
 
 
 </RelativeLayout>
