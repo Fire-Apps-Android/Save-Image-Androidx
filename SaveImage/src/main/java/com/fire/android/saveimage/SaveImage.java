@@ -19,41 +19,43 @@ import java.util.Objects;
 
 public class SaveImage {
     ImageView imageView;
-    String folderName,savedMessage,errorMessage;
+    String folderName, savedMessage, errorMessage;
     Context context;
 
-    public SaveImage(ImageView imageView,String folderName,String savedMessage,String errorMessage, Context context) {
+    public SaveImage(ImageView imageView, String folderName, String savedMessage, String errorMessage, Context context) {
         this.imageView = imageView;
-        this.folderName=folderName;
-        this.savedMessage=savedMessage;
-        this.errorMessage=errorMessage;
+        this.folderName = folderName;
+        this.savedMessage = savedMessage;
+        this.errorMessage = errorMessage;
         this.context = context;
 
 
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
-        Bitmap bitmap = bitmapDrawable.getBitmap();
 
-        OutputStream outputStream;
-        try {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
 
-            ContentResolver contentResolver = context.getContentResolver();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, System.currentTimeMillis() + ".jpg");
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH,
-                        Environment.DIRECTORY_PICTURES + File.separator + folderName);
+            OutputStream outputStream;
+            try {
+
+                ContentResolver contentResolver = context.getContentResolver();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, System.currentTimeMillis() + ".jpg");
+                contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH,
+                            Environment.DIRECTORY_PICTURES + File.separator + folderName);
+                }
+                Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                outputStream = contentResolver.openOutputStream(Objects.requireNonNull(imageUri));
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                Objects.requireNonNull(outputStream);
+                Toast.makeText(context, savedMessage, Toast.LENGTH_SHORT).show();
+
+
+            } catch (Exception e) {
+                Toast.makeText(context, errorMessage + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-            Uri imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            outputStream = (FileOutputStream) contentResolver.openOutputStream(Objects.requireNonNull(imageUri));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            Objects.requireNonNull(outputStream);
-            Toast.makeText(context, savedMessage, Toast.LENGTH_SHORT).show();
 
-
-        } catch (Exception e) {
-            Toast.makeText(context, errorMessage + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
     }
 }
 
